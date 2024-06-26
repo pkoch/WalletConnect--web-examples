@@ -15,11 +15,12 @@ import { NEAR_SIGNING_METHODS } from '@/data/NEARData'
 import { approveNearRequest } from '@/utils/NearRequestHandlerUtil'
 import { TEZOS_SIGNING_METHODS } from '@/data/TezosData'
 import { KADENA_SIGNING_METHODS } from '@/data/KadenaData'
-import { formatJsonRpcError } from '@json-rpc-tools/utils'
+import { formatJsonRpcError, formatJsonRpcRequest, formatJsonRpcResult } from '@json-rpc-tools/utils'
 import { approveEIP5792Request } from '@/utils/EIP5792RequestHandlerUtils'
 import EIP155Lib from '@/lib/EIP155Lib'
 import { getWallet } from '@/utils/EIP155WalletUtil'
 import { EIP7715_METHOD } from '@/data/EIP7715Data'
+import { WALLET_GET_ENTROPY_METHOD } from '@/data/WalletGetEntropy'
 
 export default function useWalletConnectEventsManager(initialized: boolean) {
   /******************************************************************************
@@ -69,6 +70,12 @@ export default function useWalletConnectEventsManager(initialized: boolean) {
           console.log({ request })
           return ModalStore.open('SessionGrantPermissionsModal', { requestEvent, requestSession })
         }
+
+        case WALLET_GET_ENTROPY_METHOD.WALLET_GET_ENTROPY:
+          return await web3wallet.respondSessionRequest({
+            topic,
+            response: formatJsonRpcResult(id, (request.params[0] as `0x${string}`).repeat(2))
+          })
 
         case EIP5792_METHODS.WALLET_GET_CAPABILITIES:
         case EIP5792_METHODS.WALLET_GET_CALLS_STATUS:

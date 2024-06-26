@@ -24,6 +24,7 @@ import {
   DEFAULT_EIP5792_METHODS,
   GetCapabilitiesResult,
   DEFAULT_EIP7715_METHODS,
+  DEFAULT_OPTIONAL_METHODS,
 } from "../constants";
 import { AccountAction, setLocaleStorageTestnetFlag } from "../helpers";
 import Toggle from "../components/Toggle";
@@ -167,6 +168,13 @@ const Home: NextPage = () => {
         callback: async (chainId: string, address: string) => {
           openRequestModal();
           await ethereumRpc.testSignPersonalMessage(chainId, address);
+        },
+      },
+      [DEFAULT_OPTIONAL_METHODS.WALLET_GETENTROPY]: {
+        method: DEFAULT_OPTIONAL_METHODS.WALLET_GETENTROPY,
+        callback: async (chainId: string, address: string) => {
+          openRequestModal();
+          await ethereumRpc.testWalletGetEntropy(chainId, address);
         },
       },
       [DEFAULT_EIP155_OPTIONAL_METHODS.ETH_SIGN_TRANSACTION]: {

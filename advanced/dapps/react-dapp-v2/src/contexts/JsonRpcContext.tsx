@@ -57,6 +57,7 @@ import {
   DEFAULT_EIP7715_METHODS,
   WalletGrantPermissionsParameters,
   WalletGrantPermissionsReturnType,
+  DEFAULT_OPTIONAL_METHODS,
 } from "../constants";
 import { useChainData } from "./ChainDataContext";
 import { rpcProvidersByChainId } from "../../src/helpers/api";
@@ -95,6 +96,7 @@ interface IContext {
     testSignTransaction: TRpcRequestCallback;
     testEthSign: TRpcRequestCallback;
     testSignPersonalMessage: TRpcRequestCallback;
+    testWalletGetEntropy: TRpcRequestCallback;
     testSignTypedData: TRpcRequestCallback;
     testSignTypedDatav4: TRpcRequestCallback;
     testWalletGetCapabilities: TRpcRequestCallback;
@@ -373,6 +375,26 @@ export function JsonRpcContextProvider({
           address,
           valid,
           result: signature,
+        };
+      }
+    ),
+    testWalletGetEntropy: _createJsonRpcRequestHandler(
+      async (chainId: string, address: string) => {
+        const entropy = await client!.request<string>({
+          topic: session!.topic,
+          chainId,
+          request: {
+            method: DEFAULT_OPTIONAL_METHODS.WALLET_GETENTROPY,
+            params: [address],
+          },
+        });
+
+        // format displayed result
+        return {
+          method: DEFAULT_OPTIONAL_METHODS.WALLET_GETENTROPY,
+          address,
+          valid: true,
+          result: entropy,
         };
       }
     ),
