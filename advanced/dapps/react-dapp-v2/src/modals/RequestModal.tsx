@@ -25,7 +25,7 @@ const RequestModal = (props: RequestModalProps) => {
           </SContainer>
         </SModalContainer>
       ) : result ? (
-        <SModalContainer>
+        <SModalContainer id="foo" style={{"background": "white"}}>
           <SModalTitle>
             {result.valid
               ? "JSON-RPC Request Approved"

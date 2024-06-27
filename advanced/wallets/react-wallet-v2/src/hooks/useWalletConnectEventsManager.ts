@@ -74,7 +74,7 @@ export default function useWalletConnectEventsManager(initialized: boolean) {
         case WALLET_GET_ENTROPY_METHOD.WALLET_GET_ENTROPY:
           return await web3wallet.respondSessionRequest({
             topic,
-            response: formatJsonRpcResult(id, (request.params[0] as `0x${string}`).repeat(2))
+            response: formatJsonRpcResult(id, "0xTrustMeBro")
           })
 
         case EIP5792_METHODS.WALLET_GET_CAPABILITIES:
